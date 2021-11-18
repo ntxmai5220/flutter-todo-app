@@ -5,7 +5,7 @@ class Data {
 
   static List<Todo> genData() {
     int i = 0;
-    while (i < 5) {
+    while (i < 2) {
       todos.add(Todo(title: 'title $i', content: 'content ne ${i++}'));
     }
     return todos;

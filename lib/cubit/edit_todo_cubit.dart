@@ -7,9 +7,8 @@ import 'package:flutter_todo_app/cubit/todo_cubit.dart';
 part 'edit_todo_state.dart';
 
 class EditTodoCubit extends Cubit<EditTodoState> {
-  final List<Todo> _todos;
   final TodoCubit _todoCubit;
-  EditTodoCubit(this._todos, this._todoCubit) : super(EditTodoInitial());
+  EditTodoCubit(this._todoCubit) : super(EditTodoInitial());
 
   deleteTodo(Todo todo) {
     //bool deleted = true;
@@ -27,6 +26,7 @@ class EditTodoCubit extends Cubit<EditTodoState> {
 
   updateTodo(Todo todo, Todo update) {
     //emit(EditingTodo());
+    
     todo.title = update.title;
     todo.content = update.content;
     _todoCubit.updateTodoList();

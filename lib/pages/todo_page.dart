@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_todo_app/cubit/edit_todo_cubit.dart';
-import 'package:flutter_todo_app/data/todo_data.dart';
 import 'package:flutter_todo_app/models/todo_model.dart';
 import 'package:flutter_todo_app/values/app_styles.dart';
 
 class TodoPage extends StatelessWidget {
-  final Todo todo;
-  final bool createTodo;
+  Todo todo;
+  final bool newTodo;
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _contentController = TextEditingController();
-  TodoPage({Key? key, required this.todo, this.createTodo = false})
+  TodoPage({Key? key, required this.todo, this.newTodo = false})
       : super(key: key);
 
   void _updateTodo(Todo updateTodo, context) {
@@ -34,7 +33,7 @@ class TodoPage extends StatelessWidget {
     _titleController.text = todo.title ?? '';
     _contentController.text = todo.content ?? '';
     //BlocProvider.of<EditTodoCubit>(context).editTodo();
-    if (this.createTodo) BlocProvider.of<EditTodoCubit>(context).createTodo();
+    if (this.newTodo) BlocProvider.of<EditTodoCubit>(context).createTodo();
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: buildAppBar(),
@@ -60,9 +59,6 @@ class TodoPage extends StatelessWidget {
 
           Navigator.pop(context);
         }
-
-        //editing = state is EditTodo;
-        //print(editing);
       },
       child: Container(
         padding: EdgeInsets.fromLTRB(24, 20, 24, 50),
@@ -170,7 +166,6 @@ class TodoPage extends StatelessWidget {
 
   void deleteNote(context) {
     BlocProvider.of<EditTodoCubit>(context).deleteTodo(todo);
-    print(Data.todos.length);
   }
 
   buildEditBtn(context) {
@@ -221,9 +216,14 @@ class TodoPage extends StatelessWidget {
     // });
     Todo todo =
         Todo(title: _titleController.text, content: _contentController.text);
-    if (createTodo)
+    print(_titleController.text + '___' + _contentController.text);
+    if (createTodo) {
       _newTodo(todo, context);
-    else
+      // this.newTodo = false;
+    } else {
       _updateTodo(todo, context);
+    }
+
+    this.todo = todo;
   }
 }

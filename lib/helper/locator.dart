@@ -8,6 +8,6 @@ final getIt=GetIt.instance;
 Future<void> setupLocator() async{
 
   getIt.registerSingleton(TodoCubit());
-  getIt.registerSingleton(EditTodoCubit(Data.todos, getIt<TodoCubit>()));
+  getIt.registerSingleton(EditTodoCubit(getIt<TodoCubit>()));
   //getIt.registerSingleton(instance)
 }
