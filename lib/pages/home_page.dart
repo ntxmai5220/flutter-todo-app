@@ -17,68 +17,62 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     BlocProvider.of<TodoCubit>(context).loadTodo(Data.todos);
     return Scaffold(
-      appBar: buildAppBar(),
-      floatingActionButton: buildFAB(context),
-      bottomNavigationBar: buildBottom(),
-      body: buildBody(),
-    );
-  }
-
-  buildBottom() {
-    return Material(
-      elevation: 10,
-      child: Container(
-        alignment: Alignment.center,
-        height: 50,
-        width: double.maxFinite,
-        child: Text(
-          '${list.length} notes',
-          style: AppStyles.normal,
+      appBar: AppBar(
+        elevation: 1.2,
+        toolbarHeight: 50,
+        backgroundColor: Colors.white,
+        title: Text(
+          'Notes',
+          style: AppStyles.title,
+        ),
+        centerTitle: true,
+      ),
+      floatingActionButton: Container(
+        margin: EdgeInsets.only(bottom: 100, right: 10),
+        child: FloatingActionButton(
+          backgroundColor: Colors.black,
+          elevation: 2,
+          child: Icon(
+            Icons.add,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            newNote(context);
+          },
         ),
       ),
-    );
-  }
-
-  buildFAB(context) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 20, right: 10),
-      child: FloatingActionButton(
-        backgroundColor: Colors.black,
-        elevation: 2,
-        child: Icon(
-          Icons.add,
-          color: Colors.white,
-        ),
-        onPressed: () {
-          newNote(context);
+      // bottomNavigationBar:
+      body: BlocBuilder<TodoCubit, TodoState>(
+        builder: (context, state) {
+          if (!(state is TodoLoad))
+            return Center(child: CircularProgressIndicator());
+          else {
+            final todos = state.todos;
+            return Column(
+              children: [
+                buildSearch(),
+                Expanded(
+                  child: ListView.builder(
+                      itemCount: todos.length,
+                      itemBuilder: (context, index) => //_tile(index),
+                          noteItem(index, todos[index], context)),
+                ),
+                Material(
+                  elevation: 15,
+                  child: Container(
+                    alignment: Alignment.center,
+                    height: 50,
+                    width: double.maxFinite,
+                    child: Text(
+                      '${todos.length} notes',
+                      style: AppStyles.normal,
+                    ),
+                  ),
+                ),
+              ],
+            );
+          }
         },
-      ),
-    );
-  }
-
-  buildAppBar() {
-    return AppBar(
-      elevation: 1.5,
-      toolbarHeight: 50,
-      backgroundColor: Colors.white,
-      title: Text(
-        'Notes',
-        style: AppStyles.title,
-      ),
-      centerTitle: true,
-    );
-  }
-
-  buildBody() {
-    return Container(
-      //padding: EdgeInsets.only(bottom: 50),
-      width: double.maxFinite,
-      child: Column(
-        children: [
-          buildSearch(),
-          buildListNote(),
-          //ListView.builder(itemBuilder: )
-        ],
       ),
     );
   }
@@ -88,40 +82,22 @@ class HomePage extends StatelessWidget {
       margin: EdgeInsets.symmetric(vertical: 20, horizontal: 24),
       width: double.maxFinite,
       height: 48,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(5)),
+          border: Border.all(color: AppColors.lightGrey)),
       child: TextField(
+        textInputAction: TextInputAction.search,
         decoration: InputDecoration(
-          contentPadding: EdgeInsets.symmetric(vertical: 0),
+          //contentPadding: EdgeInsets.symmetric(vertical: 0),
           hintText: 'Search Your Notes',
-          hintStyle: AppStyles.normal
-              .copyWith(color: Color.fromRGBO(217, 217, 217, 1)),
+          hintStyle: AppStyles.normal.copyWith(color: AppColors.lightGrey),
           prefixIcon: Icon(
             Icons.search,
-            color: Color.fromRGBO(51, 51, 51, 1),
+            color: AppColors.darkGrey,
           ),
-          border: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(5)),
-              borderSide:
-                  BorderSide(color: Color.fromRGBO(51, 51, 51, 1), width: 1.0)),
+          border: InputBorder.none,
         ),
       ),
-    );
-  }
-
-  buildListNote() {
-    return BlocBuilder<TodoCubit, TodoState>(
-      builder: (context, state) {
-        if (!(state is TodoLoad))
-          return Center(child: CircularProgressIndicator());
-
-        final todos = state.todos;
-
-        return Expanded(
-          child: ListView.builder(
-              itemCount: todos.length,
-              itemBuilder: (context, index) => //_tile(index),
-                  noteItem(index, todos[index], context)),
-        );
-      },
     );
   }
 
@@ -179,7 +155,7 @@ class HomePage extends StatelessWidget {
   gradientBG(int index) {
     return LinearGradient(
       begin: Alignment.topLeft,
-      end: Alignment(0.75, 0), // 10% of the width, so there are ten blinds.
+      end: Alignment(0.75, 0), // 25% of the width, so there are ten blinds.
       colors: <Color>[
         AppColors.custom[index % 7].withOpacity(0.7),
         Colors.white

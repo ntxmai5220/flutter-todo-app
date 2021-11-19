@@ -10,4 +10,7 @@ class AppColors {
     Colors.blue,
     Colors.purple,
   ];
+
+  static Color lightGrey = Color.fromRGBO(217, 217, 217, 1);
+  static Color darkGrey = Color.fromRGBO(51, 51, 51, 1);
 }
