@@ -12,6 +12,12 @@ class TodoPage extends StatelessWidget {
   TodoPage({Key? key, required this.todo, this.newTodo = false})
       : super(key: key);
 
+
+  /*
+  Như đã nói thì BlocProvider.of<...>(context).method
+  giúp truy cập các method đã định nghĩa để sử dụng...
+
+  */
   void _updateTodo(Todo updateTodo, context) {
     BlocProvider.of<EditTodoCubit>(context).updateTodo(todo, updateTodo);
   }
@@ -43,6 +49,14 @@ class TodoPage extends StatelessWidget {
       ),
       bottomSheet: buildBottom(context),
       body: BlocListener<EditTodoCubit, EditTodoState>(
+        /*
+        BlocListener ~ lắng nghe các thay đổi trạng thái để có hành động cần thiết (như thông báo hay điều hướng ...)
+        vd: như ở đây khi xóa xong mình có có trạng thái DeletedTodo 
+        ->lúc này cần có thông báo và quay về trang home
+
+        còn có :
+        listenWhen: (previousState, state){},
+        */
         listener: (context, state) {
           print(state);
           if (state is DeletedTodo) {
@@ -111,11 +125,7 @@ class TodoPage extends StatelessWidget {
               return Row(
                 children: [
                   buildDeleteBtn(context),
-                  VerticalDivider(
-                    indent: 10,
-                    endIndent: 10,
-                    width: 0,
-                  ),
+                  VerticalDivider(indent: 10, endIndent: 10, width: 0),
                   state is EditingTodo
                       ? buildSaveBtn(context)
                       : buildEditBtn(context)

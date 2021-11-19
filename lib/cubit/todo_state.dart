@@ -5,8 +5,9 @@ abstract class TodoState {}
 
 class TodoInitial extends TodoState {}
 
-class TodoLoad extends TodoState {
+class TodoLoaded extends TodoState {
+  //state giữ data => dùng cho hiển thị (sẽ hiển thị lên listview - list todo)
   final List<Todo> todos;
 
-  TodoLoad(this.todos);
+  TodoLoaded(this.todos);
 }

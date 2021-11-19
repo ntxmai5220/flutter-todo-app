@@ -10,12 +10,11 @@ import 'package:flutter_todo_app/values/app_colors.dart';
 import 'package:flutter_todo_app/values/app_styles.dart';
 
 class HomePage extends StatelessWidget {
-  final List<Todo> list = [];
   HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<TodoCubit>(context).loadTodo(Data.todos);
+    BlocProvider.of<TodoCubit>(context).loadTodo(Data.todos);// => để load data
     return Scaffold(
       appBar: AppBar(
         elevation: 1.2,
@@ -41,10 +40,18 @@ class HomePage extends StatelessWidget {
           },
         ),
       ),
-      // bottomNavigationBar:
+      
       body: BlocBuilder<TodoCubit, TodoState>(
+        /*
+        BlocBuilder -> build UI
+        builder trong đó cung cấp param context và state
+        state hỗ trợ kiểm tra state để build các UI tương ứng với state mới được cập nhật
+        
+        còn có :
+          builderWhen: (previousState, state){},
+        */
         builder: (context, state) {
-          if (!(state is TodoLoad))
+          if (!(state is TodoLoaded))
             return Center(child: CircularProgressIndicator());
           else {
             final todos = state.todos;
@@ -164,8 +171,20 @@ class HomePage extends StatelessWidget {
     );
   }
 
+
+  /*
+  Navigator.push thêm page lên stack các trang
+  trang mới chồng lên trang hiện tại và ở đỉnh stack
+
+  Navigator.pop loại bỏ trang hiện tại khỏi stack và trở về trang trước
+
+  Appbar tự hiểu tự có thêm nút back nếu stack có các trang phía dưới trang hiện tại (đang ở đỉnh)
+
+  ...còn các phương thức khác để điều hướng :v
+  */
   editNote(Todo todo, context) {
     print(todo.title);
+    
     Navigator.push(
       context,
       MaterialPageRoute(

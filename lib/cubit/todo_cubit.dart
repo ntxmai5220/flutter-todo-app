@@ -8,35 +8,42 @@ class TodoCubit extends Cubit<TodoState> {
   TodoCubit() : super(TodoInitial());
 
   loadTodo(List<Todo> todos) {
-    emit(TodoLoad(todos));
+    /*
+    Load data để hiển thị lên
+    nếu load thành công thì đổi state từ TodoInitial (lúc khởi tạo) -> TodoLoaded (đã load được)
+    */
+    emit(TodoLoaded(todos));
   }
 
   void updateTodoList() {
+    // state là state hiện tại
     final currentState = state;
-    if (currentState is TodoLoad) emit(TodoLoad(currentState.todos));
+    //kiểm tra xem đã load được data chưa mới có thể tiến hành update/delte/create
+    if (currentState is TodoLoaded) emit(TodoLoaded(currentState.todos));
   }
+
 
   addTodo(Todo todo) {
     final currentState = state;
-    if (currentState is TodoLoad) {
+    if (currentState is TodoLoaded) {
       currentState.todos.add(todo);
-      emit(TodoLoad(currentState.todos));
+      emit(TodoLoaded(currentState.todos));
     }
   }
 
   void deleteTodo(Todo todo) {
     final currentState = state;
-    if (currentState is TodoLoad) {
+    if (currentState is TodoLoaded) {
       currentState.todos.remove(todo);
-      emit(TodoLoad(currentState.todos));
+      emit(TodoLoaded(currentState.todos));
     }
   }
 
   void deleteTodoByIndex(int index) {
     final currentState = state;
-    if (currentState is TodoLoad) {
+    if (currentState is TodoLoaded) {
       currentState.todos.removeAt(index);
-      emit(TodoLoad(currentState.todos));
+      emit(TodoLoaded(currentState.todos));
     }
   }
 }
