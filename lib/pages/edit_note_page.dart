@@ -41,22 +41,50 @@ class _EditNotePageState extends State<EditNotePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      appBar: buildAppBar(),
-      body: buildBody(),
+      appBar: AppBar(
+        elevation: 1.5,
+        toolbarHeight: 50,
+        backgroundColor: Colors.white,
+      ),
+      body: Container(
+        padding: EdgeInsets.fromLTRB(24, 20, 24, 50),
+        child: Column(
+          children: [
+            TextField(
+              enabled: isEditing || !isEditMode,
+              controller: _titleController,
+              maxLines: null,
+              style: AppStyles.detailTitle,
+              // cursorHeight: 30,
+              decoration: InputDecoration(
+                  contentPadding: EdgeInsets.all(0),
+                  border: InputBorder.none,
+                  hintText: 'Title',
+                  hintStyle: AppStyles.detailTitle
+                      .copyWith(color: Color.fromRGBO(217, 217, 217, 1))),
+            ),
+            SizedBox(height: 30),
+            Expanded(
+              child: TextField(
+                enabled: isEditing || !isEditMode,
+                controller: _noteController,
+                autofocus: !widget.isEdit,
+                maxLines: null,
+                style: AppStyles.normal,
+                // cursorHeight: 30,s
+                decoration: InputDecoration(
+                    contentPadding: EdgeInsets.all(0),
+                    border: InputBorder.none,
+                    hintText: 'Note',
+                    hintStyle: AppStyles.normal
+                        .copyWith(color: Color.fromRGBO(217, 217, 217, 1))),
+              ),
+            ),
+            SizedBox(height: 10),
+          ],
+        ),
+      ),
       bottomSheet: buildBottom(),
-    );
-  }
-
-  buildAppBar() {
-    return AppBar(
-      elevation: 1.5,
-      toolbarHeight: 50,
-      backgroundColor: Colors.white,
-      // title: Text(
-      //   'Notes',
-      //   style: AppStyles.title,
-      // ),
-      // centerTitle: true,
     );
   }
 

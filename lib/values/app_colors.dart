@@ -10,4 +10,7 @@ class AppColors {
     Colors.blue,
     Colors.purple,
   ];
+
+  static const shadow = Color.fromRGBO(183, 183, 183, 0.15);
+  static const primary=  Color.fromRGBO(217, 217, 217, 1);
 }

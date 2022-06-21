@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_todo_app/pages/edit_note_page.dart';
 import 'package:flutter_todo_app/pages/home_page.dart';
 
+import 'data/node_data.dart';
+
 void main() {
+  Data.genData();
   runApp(MyApp());
 }
 
